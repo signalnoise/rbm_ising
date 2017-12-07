@@ -61,13 +61,10 @@ parser.add_argument('--ising_size', dest='ising_size', default=32, help='lattice
                     type=int)
 parser.add_argument('--k', dest='kCD', default=2, help='number of Contrastive Divergence steps',
                     type=int)
-parser.add_argument('--imgout', dest='image_output_dir', default='./', help='directory in which to save output images',
-                    type=str)
 parser.add_argument('--train', dest='training_data', default='state0.data', help='path to training input data',
                     type=str)
 parser.add_argument('--txtout', dest='text_output_dir', default='./', help='directory in which to save text output data',
                     type=str)
-parser.add_argument('--savepath', dest='save_path', default='./', help='Saved states will be saved at this path')
 
 args = parser.parse_args()
 print(args)
@@ -111,7 +108,7 @@ if args.ckpoint is not None:
 learning_rate = 0.01   # Mnist 0.3
 mom = 0.0  # momentum
 damp = 0.0  # dampening factor
-wd = 0.0  # weight decay  ## 2.27 0.0002    Mnist 0.0001
+wd = 0.0001  # weight decay  ## 2.27 0.0002    Mnist 0.0001
 
 train_op = optim.SGD(rbm.parameters(), lr=learning_rate,
                      momentum=mom, dampening=damp, weight_decay=wd)
@@ -164,7 +161,7 @@ for epoch in pbar:
     #        make_grid(new_visible.view(-1, 1, image_size, image_size).data))
 
     # Normalize the 
-    imgshow(args.image_output_dir + "parameter" + str(epoch).zfill(5),
+    imgshow(args.text_output_dir + "/images/" + "parameter" + str(epoch).zfill(5),
             make_grid(rbm.W.view(hidden_layers, 1, image_size, image_size).data))
     #imgshow(args.image_output_dir + "hidden" + str(epoch),
     #        make_grid(hidden.view(-1, 1, args.hidden_size, args.hidden_size).data))
@@ -174,8 +171,8 @@ for epoch in pbar:
     # .data is used to retrieve the tensor held by the Parameter(Variable) W, then we can get the numpy representation
 
     if epoch % 10  == 0 :
-        torch.save(rbm.state_dict(), "trained_rbm.pytorch."+str(epoch).zfill(5))
+        torch.save(rbm.state_dict(), args.text_output_dir + "trained_rbm.pytorch."+str(epoch).zfill(5))
 
 # Save the model
-torch.save(rbm.state_dict(), "trained_rbm.pytorch.last")
+torch.save(rbm.state_dict(), args.text_output_dir + "trained_rbm.pytorch.last")
 loss_file.close()
