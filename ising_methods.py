@@ -1,6 +1,6 @@
 import numpy as np
 
-
+# Class allowing for a little easier state by state calculation of thermodynamic properties
 class IsingState:
 
 	def __init__(self, state, ising_size):
@@ -11,10 +11,12 @@ class IsingState:
 
 	def magnetisation(self):
 
+		# Convert numbers from the range [0,1] to [-1,1]
 		return np.mean(np.add(np.multiply(np.reshape(self.state, self.shape), 2), -1))
 
 	def energy(self):
 
+		# Takes the product of every spin with its bottom and right neighbours
 		e = 0
 		for i in range(self.state.shape[0]):
 			for j in range(self.state.shape[1]):
@@ -22,8 +24,11 @@ class IsingState:
 		return e
 
 	def spin(self, i, j):
+
+		# Convert spins from 0/1 to -1/1
 		return 2*self.state[i, j] - 1
 
+	# These methods implement periodic boundary conditions
 	def right(self, i, j):
 
 		if i == self.state.shape[0] - 1:
