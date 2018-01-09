@@ -108,10 +108,9 @@ if args.ckpoint is not None:
 learning_rate = 0.01   # Mnist 0.3
 mom = 0.0  # momentum
 damp = 0.0  # dampening factor
-wd = 0.0001  # weight decay  ## 2.27 0.0002    Mnist 0.0001
+wd = 0.000  # weight decay  ## 2.27 0.0002    Mnist 0.0001
 
-train_op = optim.SGD(rbm.parameters(), lr=learning_rate,
-                     momentum=mom, dampening=damp, weight_decay=wd)
+train_op = optim.SGD(rbm.parameters(),lr=learning_rate,momentum=mom, dampening=damp, weight_decay=wd)
 
 # progress bar
 pbar = tqdm(range(args.epochs))
@@ -161,7 +160,7 @@ for epoch in pbar:
     #        make_grid(new_visible.view(-1, 1, image_size, image_size).data))
 
     # Normalize the 
-    imgshow(args.text_output_dir + "/images/" + "parameter" + str(epoch).zfill(5),
+    imgshow(args.text_output_dir + "images/" + "parameter" + str(epoch).zfill(5),
             make_grid(rbm.W.view(hidden_layers, 1, image_size, image_size).data))
     #imgshow(args.image_output_dir + "hidden" + str(epoch),
     #        make_grid(hidden.view(-1, 1, args.hidden_size, args.hidden_size).data))

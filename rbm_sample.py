@@ -100,20 +100,20 @@ def sample_from_rbm(steps, model, image_size, nstates=30, v_in=None):
         v = v_in
     else:
         # Initialize with zeroes
-        v = torch.zeros(nstates, model.v_bias.data.shape[0])
+        #v = torch.zeros(nstates, model.v_bias.data.shape[0])
         # Random initial visible state
-        #v = F.relu(torch.sign(torch.rand(nstates,v_bias.shape[0])-0.5)).data
+        v = F.relu(torch.sign(torch.rand(nstates, model.v_bias.data.shape[0])-0.5)).data
 
     v_prob = v
 
     # Run the Gibbs sampling for a number of steps
-    for s in xrange(steps):
+    for s in range(steps):
         if (s % parameters['save interval'] == 0):
             if parameters['output_states']:
-                imgshow(parameters['image_dir'] + "dream" + str(s),
+                imgshow(parameters['image_dir'] + "dream" + str(s).zfill(5),
                         make_grid(v.view(-1, 1, image_size, image_size)))
             else:
-                imgshow(parameters['image_dir'] + "dream" + str(s),
+                imgshow(parameters['image_dir'] + "dream" + str(s).zfill(5),
                         make_grid(v_prob.view(-1, 1, image_size, image_size)))
             if args.verbose:
                 print(s, "OK")
@@ -185,7 +185,7 @@ print('Model succesfully loaded')
 
 if parameters['initialize_with_training']:
     data = torch.zeros(parameters['concurrent samples'], model_size)
-    for i in xrange(parameters['concurrent samples']):
+    for i in range(parameters['concurrent samples']):
         data[i] = train_loader[i + 100][0].view(-1, model_size)
     sample_from_rbm(parameters['steps'], rbm, image_size, data)
 else:
