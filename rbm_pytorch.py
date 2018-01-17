@@ -49,6 +49,7 @@ class CSV_Ising_dataset(Dataset):
     def __len__(self):
         return len(self.imgs)
 
+
 class RBM(nn.Module):
     def __init__(self, n_vis=784, n_hid=500, k=5):
         super(RBM, self).__init__()
@@ -72,6 +73,7 @@ class RBM(nn.Module):
         """
         return F.relu(torch.sign(prob - random))
 
+
     def hidden_from_visible(self, visible):
         # Enable or disable neurons depending on probabilities
         probability = torch.sigmoid(F.linear(visible, self.W, self.h_bias))
@@ -93,7 +95,7 @@ class RBM(nn.Module):
             new_visible, probvis = self.visible_from_hidden(probhid)
         else:
             new_visible, probvis = self.visible_from_hidden(hidden)
-            
+
         # new_hidden, probhid_new = self.hidden_from_visible(probvis)
 
         return hidden, probhid, new_visible, probvis
@@ -183,6 +185,7 @@ class RBM(nn.Module):
         # The minus sign comes from the implementation of the SGD in pytorch 
         # see http://www.cs.toronto.edu/~hinton/absps/momentum.pdf
         # the learning rate has a negative sign in front
+
         self.W.grad = -(training_set_avg - h_prob_negative.t().mm(vk)) / probability.size(0)
         #print(self.W.grad)
 
@@ -193,3 +196,4 @@ class RBM(nn.Module):
         # Update the h_bias
         self.h_bias.grad = -(probability - h_prob_negative).mean(0)
         #print("hbias grad", self.h_bias.grad)
+

@@ -36,7 +36,6 @@ import rbm_pytorch
 MNIST_SIZE = 784  # 28x28
 #####################################################
 
-
 def imgshow(file_name, img):
     npimg = np.transpose(img.numpy(), (1, 2, 0))
     f = "./%s.png" % file_name
@@ -44,6 +43,7 @@ def imgshow(file_name, img):
     Wmax = img.max
     plt.imsave(f, npimg, vmin=Wmin, vmax=Wmax)
     #plt.imsave(f, npimg)
+
 
 
 # Parse command line arguments
@@ -86,7 +86,6 @@ if args.model == 'mnist':
                              ]))
     train_loader = torch.utils.data.DataLoader(
         dataset, batch_size=args.batches, shuffle=True, drop_last=True)
-
     test_loader = torch.utils.data.DataLoader(
         datasets.MNIST('./DATA/MNIST_data', train=False, transform=transforms.Compose([
             transforms.ToTensor()
@@ -125,6 +124,7 @@ pbar = tqdm(range(args.start_epoch, args.epochs))
 loss_file = open(args.text_output_dir + "Loss_timeline.data_" + str(args.model) + "_lr" + str(learning_rate) + "_wd" + str(wd) + "_mom" + str(
     mom) + "_epochs" + str(args.epochs), "w", buffering=1)
 loss_file.write("#Epoch \t  Loss mean \t free energy mean \t reconstruction error mean \n")
+
 # Run the RBM training
 for epoch in pbar:
     loss_ = []
@@ -140,6 +140,7 @@ for epoch in pbar:
         # the average on the training set of the gradients is
         # the sum of the derivative averaged over the training set minus the average on the model
         # still possible instabilities here, so I am computing the gradient myself
+
         data_free_energy = rbm.free_energy(data_input)  # note: it does not include Z
         loss = data_free_energy - rbm.free_energy(new_visible)
         loss_.append(loss.data[0])
@@ -175,4 +176,5 @@ for epoch in pbar:
 
 # Save the final model
 torch.save(rbm.state_dict(), "trained_rbm.pytorch.last")
+
 loss_file.close()

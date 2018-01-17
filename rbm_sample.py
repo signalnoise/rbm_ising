@@ -37,10 +37,10 @@ from pprint import pprint
 import rbm_pytorch
 from numpy.random import randint
 
+
 #####################################################
 MNIST_SIZE = 784  # 28x28
 #####################################################
-
 
 def get_ising_variables(field, sign=-1):
     """ Get the Ising variables {-1,1} representation
@@ -79,7 +79,6 @@ def ising_averages(mag_history, model_size, label=""):
     #print(label, " ::: Magnetization: ", mag_avg[0,0], " +- ", mag_std[0,0], " - Susceptibility:", susceptibility)
     #plt.plot(mag_history[:,0], linewidth=0.2)
     #plt.show()
-
 
 def imgshow(file_name, img):
     npimg = np.transpose(img.numpy(), (1, 2, 0))
@@ -185,6 +184,7 @@ def sample_from_rbm(steps, model, image_size, nstates=30, v_in=None):
     return v, np.asarray(magv), np.asarray(magh)
 
 
+
 # Parse command line arguments
 parser = argparse.ArgumentParser(description='Process some integers.')
 parser.add_argument('--json', dest='input_json', default='params.json', help='JSON file describing the sample parameters',
@@ -198,6 +198,7 @@ try:
 except IOError as e:
     print("I/O error({0}): {1}".format(e.errno, e.strerror))
     sys.exit(1)
+
 except:
     print("Unexpected error:", sys.exc_info()[0])
     raise
@@ -206,7 +207,9 @@ if args.verbose:
     print(args)
     pprint(parameters)
 
+
 n_h = parameters['hidden_size'] * parameters['hidden_size']
+
 
 
 # For the MNIST data set
@@ -239,6 +242,7 @@ elif parameters['model'] == 'ising':
 # Read the model, example
 rbm = rbm_pytorch.RBM(n_vis=model_size, n_hid=n_h)
 
+
 # load the model, if the file is present
 try:
     print("Loading saved RBM network state from file",
@@ -268,8 +272,6 @@ ising_averages(magh, model_size, "h")
 
 
 
-
-
 """
 
 Example of JSON input
@@ -278,7 +280,11 @@ Example of JSON input
     "model": "ising",
     "checkpoint": "trained_rbm.pytorch.last",
     "image_dir": "./DATA/Dream_Ising/",
+<<<<<<< HEAD
     "hidden_size": 20,
+=======
+    "hidden_layers": 20,
+>>>>>>> 5c5a210b55da742270cc41f6dc677615959e262c
     "steps": 500,
     "save interval": 2,
     "concurrent samples": 30,

@@ -1,6 +1,8 @@
 import numpy as np
 import torch
 
+
+
 # Class allowing for a little easier state by state calculation of thermodynamic properties
 class IsingState:
 
@@ -46,15 +48,6 @@ class IsingState:
 def magnetisation(state, size):
 	return abs(np.mean(np.add(np.multiply(state, 2), -1)) * size)
 
-
-def susceptibility(states, temperature, size):
-
-	magnetisations = np.zeros(len(states))
-	for i in range(len(states)):
-		magnetisations[i] = magnetisation(states[i,:],size)
-	return np.var(magnetisations, dtype="Float64")/(temperature*size)
-
-
 def heat_capacity(energies, temperature, size):
 
 	return np.var(energies, dtype="Float64")/(size ** 2 * temperature ** 2)
@@ -66,3 +59,4 @@ def avg_magnetisation(states,model_size):
 	for i in range(len(states)):
 		magnetisations[i] = np.absolute(magnetisation(states[i,:],model_size))
 	return np.mean(magnetisations, dtype="Float64")/model_size
+
