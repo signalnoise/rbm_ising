@@ -262,5 +262,5 @@ for x in range(10, 60, 10):
 	mag, susc = ising_averages(magv, model_size, "v")
 	heatc = heat_capacity(energies,2.27, 8)
 
-	with open("./sgd_mixed6.txt", "a") as myfile:
+	with open("./sgd_mixed7.txt", "a") as myfile:
 		myfile.write("{:d}\t{:f}\t{:f}\t{:f}\n".format(x, mag, susc,heatc))
